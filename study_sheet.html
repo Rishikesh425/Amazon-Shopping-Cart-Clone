@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEasy Study Sheet - PDF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #0d47a1;
+            border-bottom: 3px solid #0d47a1;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        h2 {
+            color: #1565c0;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 4px solid #1565c0;
+            padding-left: 10px;
+        }
+        
+        h3 {
+            color: #1976d2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            page-break-inside: avoid;
+        }
+        
+        .section:nth-child(even) {
+            background: #e3f2fd;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #0d47a1;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .code-block {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-size: 0.85em;
+        }
+        
+        .highlight {
+            background: #fff59d;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .box {
+            border: 2px solid #1976d2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            background: #fff3e0;
+        }
+        
+        .box-title {
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 10px;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .diagram {
+            background: white;
+            border: 2px solid #0d47a1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            font-size: 0.9em;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            display: block;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+            }
+            .container {
+                padding: 20px;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- TITLE PAGE -->
+        <h1>🛍️ ShopEasy Project Study Sheet</h1>
+        <p style="text-align: center; font-size: 1.2em; color: #666; margin-bottom: 30px;">
+            Complete Guide to Everything in Your E-Commerce Project
+        </p>
+        
+        <!-- QUICK STATS -->
+        <div class="stats">
+            <div class="stat-box">
+                <span class="stat-number">85+</span>
+                <span>Products</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">5</span>
+                <span>Categories</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">8</span>
+                <span>API Routes</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">2</span>
+                <span>Databases</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">3</span>
+                <span>Servers</span>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- ================== -->
+        <!-- 1. PROJECT OVERVIEW -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>1️⃣ Project Overview</h2>
+            
+            <h3>What is ShopEasy?</h3>
+            <ul>
+                <li>Complete e-commerce shopping website</li>
+                <li>Modern tech stack (FastAPI + PostgreSQL + MongoDB)</li>
+                <li>User-friendly shopping interface</li>
+                <li>Ready for production deployment</li>
+            </ul>
+
+            <h3>Current Status</h3>
+            <table>
+                <tr>
+                    <th>Component</th>
+                    <th>Status</th>
+                    <th>Access</th>
+                </tr>
+                <tr>
+                    <td>Frontend (Website)</td>
+                    <td>✅ Running</td>
+                    <td>http://127.0.0.1:3000/index.html</td>
+                </tr>
+                <tr>
+                    <td>Backend (API)</td>
+                    <td>✅ Running</td>
+                    <td>http://localhost:8000</td>
+                </tr>
+                <tr>
+                    <td>API Docs</td>
+                    <td>✅ Available</td>
+                    <td>http://localhost:8000/docs</td>
+                </tr>
+                <tr>
+                    <td>PostgreSQL</td>
+                    <td>⚠️ Optional</td>
+                    <td>Deploy-time setup</td>
+                </tr>
+                <tr>
+                    <td>MongoDB</td>
+                    <td>⚠️ Optional</td>
+                    <td>Deploy-time setup</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ================== -->
+        <!-- 2. TECHNOLOGY STACK -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>2️⃣ Technology Stack</h2>
+            
+            <table>
+                <tr>
+                    <th>Layer</th>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td><strong>Frontend</strong></td>
+                    <td>HTML + Vanilla JavaScript</td>
+                    <td>Website UI (no frameworks)</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend</strong></td>
+                    <td>Python FastAPI</td>
+                    <td>REST API server</td>
+                </tr>
+                <tr>
+                    <td><strong>Server</strong></td>
+                    <td>Uvicorn (ASGI)</td>
+                    <td>Run FastAPI</td>
+                </tr>
+                <tr>
+                    <td><strong>Database 1</strong></td>
+                    <td>PostgreSQL</td>
+                    <td>Products, categories, orders (relational)</td>
+                </tr>
+                <tr>
+                    <td><strong>Database 2</strong></td>
+                    <td>MongoDB</td>
+                    <td>Shopping carts, sessions (document)</td>
+                </tr>
+                <tr>
+                    <td><strong>Hosting</strong></td>
+                    <td>Railway + GitHub Pages</td>
+                    <td>Production deployment</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- ================== -->
+        <!-- 3. FILE STRUCTURE -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>3️⃣ File Structure</h2>
+            
+            <div class="code-block">
+projects/
+├── <span style="color: #ff6b6b;">main.py</span>              ⭐ Backend (FastAPI) - MAIN FILE
+├── <span style="color: #99ccff;">index.html</span>            ⭐ Frontend (Website) - USER SEES THIS
+├── requirements.txt        Python packages to install
+├── .env                   Database credentials (KEEP SECRET!)
+├── .env.example           Template for .env
+├── STUDY_GUIDE.md         This guide in markdown
+├── DEPLOYMENT.md          How to deploy
+├── README.md              Project info
+├── app.py                 Old Flask version (don't use)
+├── server.js              Old Node.js version (don't use)
+└── AmazonCart2.py         Product reference file
+            </div>
+        </div>
+
+        <!-- ================== -->
+        <!-- 4. KEY FILES EXPLAINED -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>4️⃣ Key Files Explained</h2>
+            
+            <h3>📄 main.py (THE BACKEND)</h3>
+            <div class="box">
+                <div class="box-title">What It Does:</div>
+                <ul>
+                    <li>Runs FastAPI server on <span class="highlight">port 8000</span></li>
+                    <li>Provides 8 API endpoints</li>
+                    <li>Contains all 85+ products</li>
+                    <li>Handles shopping cart logic</li>
+                    <li>Manages checkout process</li>
+                </ul>
+            </div>
+            
+            <div class="code-block">
+# How to run:
+python -m uvicorn main:app --reload
+
+# Lines of code by section:
+1-20    : FastAPI setup
+22-40   : PostgreSQL connection
+42-53   : MongoDB connection
+55-235  : Product data (85+ items)
+202-300+: API endpoint routes
+            </div>
+
+            <h3>🌐 index.html (THE FRONTEND)</h3>
+            <div class="box">
+                <div class="box-title">What It Does:</div>
+                <ul>
+                    <li>Displays the shopping website</li>
+                    <li>Shows product categories & items</li>
+                    <li>Manages shopping cart UI</li>
+                    <li>Handles checkout process</li>
+                    <li>Pure JavaScript (no frameworks needed)</li>
+                </ul>
+            </div>
+            
+            <div class="code-block">
+# How to run:
+python -m http.server 3000 --bind 127.0.0.1
+
+# Connects to FastAPI at:
+const API = "http://localhost:8000/api";  (line 1140)
+
+# Technologies:
+- HTML (structure)
+- CSS (styling)
+- Vanilla JavaScript (interactivity)
+            </div>
+
+            <h3>📦 requirements.txt</h3>
+            <table>
+                <tr>
+                    <th>Package</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>fastapi</td>
+                    <td>Web framework</td>
+                </tr>
+                <tr>
+                    <td>uvicorn</td>
+                    <td>ASGI server</td>
+                </tr>
+                <tr>
+                    <td>psycopg2-binary</td>
+                    <td>PostgreSQL driver</td>
+                </tr>
+                <tr>
+                    <td>pymongo</td>
+                    <td>MongoDB driver</td>
+                </tr>
+                <tr>
+                    <td>python-dotenv</td>
+                    <td>Load .env file</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- ================== -->
+        <!-- 5. API ENDPOINTS -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>5️⃣ API Endpoints (What main.py Provides)</h2>
+            
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>What It Does</th>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/categories</td>
+                    <td>Get all categories</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/categories/:cat</td>
+                    <td>Get subcategories</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/products/:cat/:sub</td>
+                    <td>Get products in category</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/cart/:userId</td>
+                    <td>Get user's cart</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/api/cart/:userId</td>
+                    <td>Add item to cart</td>
+                </tr>
+                <tr>
+                    <td>PUT</td>
+                    <td>/api/cart/:userId/:idx</td>
+                    <td>Update cart quantity</td>
+                </tr>
+                <tr>
+                    <td>DELETE</td>
+                    <td>/api/cart/:userId</td>
+                    <td>Clear entire cart</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/api/checkout/:userId</td>
+                    <td>Complete order</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ================== -->
+        <!-- 6. PRODUCT DATA -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>6️⃣ Product Data (85+ Items)</h2>
+            
+            <h3>Categories</h3>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Subcategories</th>
+                    <th>Products</th>
+                </tr>
+                <tr>
+                    <td><strong>Electronics</strong></td>
+                    <td>Laptops, Phones, Headphones, Watches</td>
+                    <td>23</td>
+                </tr>
+                <tr>
+                    <td><strong>Clothes</strong></td>
+                    <td>Men, Women</td>
+                    <td>19</td>
+                </tr>
+                <tr>
+                    <td><strong>Shoes</strong></td>
+                    <td>Sports, Casual, Formal</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td><strong>Daily Essentials</strong></td>
+                    <td>Grocery, Toiletries, Cleaning, Stationery</td>
+                    <td>17</td>
+                </tr>
+                <tr>
+                    <td><strong>Protein & Supplements</strong></td>
+                    <td>Whey, Creatine, Multivitamins, Pre-Workout</td>
+                    <td>14</td>
+                </tr>
+            </table>
+
+            <h3>Where Products Are Stored</h3>
+            <ul>
+                <li><span class="highlight">main.py (lines 55-235)</span> - Used by running website</li>
+                <li><span class="highlight">app.py</span> - Flask version (reference only)</li>
+                <li><span class="highlight">AmazonCart2.py</span> - Original data source</li>
+            </ul>
+
+            <h3>Product Structure</h3>
+            <div class="code-block">
+{
+  "brand": "Dell",
+  "model": "Inspiron 15",
+  "specs": "i5, 8GB RAM, 512GB SSD, 15.6\"",
+  "price": 55000
+}
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- ================== -->
+        <!-- 7. DATABASE USAGE -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>7️⃣ Database Usage</h2>
+            
+            <h3>PostgreSQL (Relational)</h3>
+            <table>
+                <tr>
+                    <td><strong>Status</strong></td>
+                    <td>⚠️ Optional (not running locally)</td>
+                </tr>
+                <tr>
+                    <td><strong>Used For</strong></td>
+                    <td>Products, Categories, Stock, Orders</td>
+                </tr>
+                <tr>
+                    <td><strong>Driver</strong></td>
+                    <td>SQLAlchemy + psycopg2</td>
+                </tr>
+                <tr>
+                    <td><strong>Tables</strong></td>
+                    <td>categories, products, orders</td>
+                </tr>
+                <tr>
+                    <td><strong>When Used</strong></td>
+                    <td>Production deployment</td>
+                </tr>
+            </table>
+
+            <h3>MongoDB (Document)</h3>
+            <table>
+                <tr>
+                    <td><strong>Status</strong></td>
+                    <td>⚠️ Optional (not running locally)</td>
+                </tr>
+                <tr>
+                    <td><strong>Used For</strong></td>
+                    <td>Shopping carts, Sessions, Order history</td>
+                </tr>
+                <tr>
+                    <td><strong>Driver</strong></td>
+                    <td>PyMongo</td>
+                </tr>
+                <tr>
+                    <td><strong>Collection</strong></td>
+                    <td>carts</td>
+                </tr>
+                <tr>
+                    <td><strong>When Used</strong></td>
+                    <td>Production deployment</td>
+                </tr>
+            </table>
+
+            <h3>Cart Document Example</h3>
+            <div class="code-block">
+{
+  "userId": "user123",
+  "items": [
+    {
+      "name": "Dell Laptop",
+      "price": 55000,
+      "qty": 1
+    },
+    {
+      "name": "Nike Shoes",
+      "price": 6000,
+      "qty": 2
+    }
+  ],
+  "createdAt": "2026-03-27T10:30:00Z"
+}
+            </div>
+        </div>
+
+        <!-- ================== -->
+        <!-- 8. DATA FLOW -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>8️⃣ Data Flow (How It Works)</h2>
+            
+            <h3>User Opens Website</h3>
+            <div class="diagram">
+1. Browser loads http://127.0.0.1:3000/index.html
+2. JavaScript executes
+3. Fetches GET /api/categories from FastAPI
+4. FastAPI returns: ["Electronics", "Clothes", "Shoes", ...]
+5. Homepage displays category buttons
+6. User clicks category
+7. JavaScript fetches GET /api/products/Electronics/Laptops
+8. Shows 6 Dell, HP, Lenovo, Asus laptops with prices
+            </div>
+
+            <h3>User Adds to Cart</h3>
+            <div class="diagram">
+1. User clicks "Add to Cart" on Dell Laptop
+2. JavaScript sends POST /api/cart/user123
+   Body: { name: "Dell Laptop", price: 55000, qty: 1 }
+3. FastAPI receives request
+4. Stores in MongoDB (or in-memory if no DB)
+5. Returns updated cart
+6. JavaScript displays cart (₹55,000)
+7. Cart count updates to "1"
+            </div>
+
+            <h3>User Checks Out</h3>
+            <div class="diagram">
+1. User clicks "Checkout"
+2. JavaScript sends POST /api/checkout/user123
+3. FastAPI deletes cart from MongoDB
+4. Returns success message
+5. Shows "Order Placed! ✓"
+6. Cart is now empty
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- ================== -->
+        <!-- 9. LOCAL VS PRODUCTION -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>9️⃣ Local vs Production</h2>
+            
+            <h3>LOCAL (Right Now)</h3>
+            <table>
+                <tr>
+                    <td><strong>Frontend</strong></td>
+                    <td>http://127.0.0.1:3000/index.html</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend</strong></td>
+                    <td>http://localhost:8000</td>
+                </tr>
+                <tr>
+                    <td><strong>Servers Running</strong></td>
+                    <td>2 (HTTP on 3000, FastAPI on 8000)</td>
+                </tr>
+                <tr>
+                    <td><strong>Databases</strong></td>
+                    <td>Optional (uses hardcoded data)</td>
+                </tr>
+                <tr>
+                    <td><strong>Who Can Access</strong></td>
+                    <td>Only your computer</td>
+                </tr>
+            </table>
+
+            <h3>PRODUCTION (After Deployment)</h3>
+            <table>
+                <tr>
+                    <td><strong>Frontend</strong></td>
+                    <td>https://username.github.io/shopease</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend</strong></td>
+                    <td>https://shopease-api.railway.app</td>
+                </tr>
+                <tr>
+                    <td><strong>Servers Running</strong></td>
+                    <td>Railway (cloud server)</td>
+                </tr>
+                <tr>
+                    <td><strong>Databases</strong></td>
+                    <td>PostgreSQL + MongoDB Atlas</td>
+                </tr>
+                <tr>
+                    <td><strong>Who Can Access</strong></td>
+                    <td>Everyone on the internet</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ================== -->
+        <!-- 10. QUICK REFERENCE -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>🔟 Quick Reference Table</h2>
+            
+            <table>
+                <tr>
+                    <th>Component</th>
+                    <th>Location</th>
+                    <th>Purpose</th>
+                    <th>Running?</th>
+                </tr>
+                <tr>
+                    <td>Website</td>
+                    <td>index.html</td>
+                    <td>Show products, cart</td>
+                    <td>✅ Port 3000</td>
+                </tr>
+                <tr>
+                    <td>API Server</td>
+                    <td>main.py</td>
+                    <td>Handle requests</td>
+                    <td>✅ Port 8000</td>
+                </tr>
+                <tr>
+                    <td>Products</td>
+                    <td>main.py L55-235</td>
+                    <td>85+ items data</td>
+                    <td>✅ In memory</td>
+                </tr>
+                <tr>
+                    <td>PostgreSQL</td>
+                    <td>Port 5432</td>
+                    <td>Products DB</td>
+                    <td>❌ Not running</td>
+                </tr>
+                <tr>
+                    <td>MongoDB</td>
+                    <td>Port 27017</td>
+                    <td>Carts DB</td>
+                    <td>❌ Not running</td>
+                </tr>
+                <tr>
+                    <td>Flask App</td>
+                    <td>app.py</td>
+                    <td>Old version</td>
+                    <td>❌ Don't use</td>
+                </tr>
+                <tr>
+                    <td>Node.js</td>
+                    <td>server.js</td>
+                    <td>Old version</td>
+                    <td>❌ Don't use</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- ================== -->
+        <!-- 11. DEPLOYMENT STEPS -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>1️⃣1️⃣ Deployment Steps</h2>
+            
+            <h3>Step 1: GitHub Setup</h3>
+            <ol>
+                <li>Create GitHub account</li>
+                <li>Create new repository "shopease"</li>
+                <li>Push your code to GitHub</li>
+            </ol>
+
+            <h3>Step 2: Railway Deployment</h3>
+            <ol>
+                <li>Go to https://railway.app</li>
+                <li>Sign up with GitHub</li>
+                <li>Connect your shopease repository</li>
+                <li>Railway auto-deploys (watches for changes)</li>
+                <li>Get your backend URL: https://shopease-api.railway.app</li>
+            </ol>
+
+            <h3>Step 3: GitHub Pages (Frontend)</h3>
+            <ol>
+                <li>Create folder "docs" in repository</li>
+                <li>Move index.html to docs/</li>
+                <li>Update API URL in index.html: <span class="highlight">const API = "https://shopease-api.railway.app/api"</span></li>
+                <li>Commit and push to GitHub</li>
+                <li>In repo Settings → Pages → Select "docs" folder</li>
+                <li>Your site: https://username.github.io/shopease</li>
+            </ol>
+
+            <h3>Step 4: Add Databases</h3>
+            
+            <strong>PostgreSQL:</strong>
+            <ul>
+                <li>Add PostgreSQL to Railway project</li>
+                <li>Copy connection string</li>
+                <li>Set PG_* environment variables</li>
+            </ul>
+            
+            <strong>MongoDB:</strong>
+            <ul>
+                <li>Go to https://www.mongodb.com/cloud/atlas</li>
+                <li>Create free cluster</li>
+                <li>Copy connection string</li>
+                <li>Set MONGO_URI environment variable</li>
+            </ul>
+        </div>
+
+        <!-- ================== -->
+        <!-- 12. TROUBLESHOOTING -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>1️⃣2️⃣ Troubleshooting</h2>
+            
+            <table>
+                <tr>
+                    <th>Problem</th>
+                    <th>Cause</th>
+                    <th>Solution</th>
+                </tr>
+                <tr>
+                    <td>"Cannot GET /api/categories"</td>
+                    <td>FastAPI not running</td>
+                    <td>python -m uvicorn main:app --reload</td>
+                </tr>
+                <tr>
+                    <td>Website shows blank</td>
+                    <td>HTTP server not running</td>
+                    <td>python -m http.server 3000 --bind 127.0.0.1</td>
+                </tr>
+                <tr>
+                    <td>"Module not found"</td>
+                    <td>Dependencies missing</td>
+                    <td>pip install -r requirements.txt</td>
+                </tr>
+                <tr>
+                    <td>Products not showing</td>
+                    <td>Wrong API URL</td>
+                    <td>Check index.html line 1140</td>
+                </tr>
+                <tr>
+                    <td>Port already in use</td>
+                    <td>Another app using port</td>
+                    <td>Change port number or kill process</td>
+                </tr>
+                <tr>
+                    <td>Cart data not saving</td>
+                    <td>MongoDB not connected</td>
+                    <td>Normal for testing - add MongoDB later</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ================== -->
+        <!-- 13. KEY CONCEPTS -->
+        <!-- ================== -->
+        <div class="section">
+            <h2>1️⃣3️⃣ Key Concepts Explained</h2>
+            
+            <h3>❓ What is REST API?</h3>
+            <p>A way for programs to talk to each other using HTTP (web language).</p>
+            <div class="code-block">
+GET    /api/products  → Ask for data
+POST   /api/cart      → Send data to create
+PUT    /api/cart/:id  → Send data to update
+DELETE /api/cart/:id  → Request to delete
+            </div>
+
+            <h3>❓ What is FastAPI?</h3>
+            <p>Modern Python web framework for building APIs quickly and with less code.</p>
+
+            <h3>❓ What is Uvicorn?</h3>
+            <p>ASGI server that runs Python web applications. Think of it as the "engine" that powers FastAPI.</p>
+
+            <h3>❓ PostgreSQL vs MongoDB?</h3>
+            <p><strong>PostgreSQL:</strong> Strict structure (perfect for products with fixed fields)</p>
+            <p><strong>MongoDB:</strong> Flexible structure (perfect for carts that change)</p>
+
+            <h3>❓ What is GitHub Pages?</h3>
+            <p>Free website hosting from GitHub for static files (HTML, CSS, JavaScript).</p>
+
+            <h3>❓ What is Railway?</h3>
+            <p>Cloud platform to host your FastAPI server. Auto-deploys when you push code.</p>
+        </div>
+
+        <!-- ================== -->
+        <!-- FOOTER -->
+        <!-- ================== -->
+        <div class="footer">
+            <p><strong>ShopEasy Study Sheet</strong> | Created: March 27, 2026</p>
+            <p>Stack: FastAPI + PostgreSQL + MongoDB | Deployment: Railway + GitHub Pages</p>
+            <p style="margin-top: 10px; font-size: 0.8em;">📄 Print this page as PDF: Ctrl+P or File → Print</p>
+        </div>
+    </div>
+</body>
+</html>

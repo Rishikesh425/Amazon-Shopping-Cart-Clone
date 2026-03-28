@@ -1,0 +1,42 @@
+node_modules/
+.env
+.env.local
+dist/
+build/
+.DS_Store
+*.log
+.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+.pytest_cache/
+.coverage
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.sublime-workspace
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Node
+package-lock.json
+yarn.lock
+
+STUDY_GUIDE.md

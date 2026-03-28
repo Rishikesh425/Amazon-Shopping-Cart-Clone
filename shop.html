@@ -1,0 +1,1357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ShopEasy — Premium Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & VARIABLES ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink:    #0d0d0d;
+  --cream:  #faf8f4;
+  --paper:  #ffffff;
+  --gold:   #c8960c;
+  --gold2:  #f0c040;
+  --rust:   #c0392b;
+  --sage:   #2d6a4f;
+  --muted:  #888;
+  --border: #e8e4db;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.14);
+  --radius: 12px;
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ─── TOP BAR ─── */
+.topbar {
+  background: var(--ink);
+  color: var(--gold2);
+  text-align: center;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  padding: 8px;
+  font-weight: 500;
+}
+
+/* ─── HEADER ─── */
+header {
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 1000;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+.header-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  gap: 20px;
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem; font-weight: 900;
+  color: var(--ink); letter-spacing: -0.02em;
+  cursor: pointer; flex-shrink: 0;
+}
+.logo span { color: var(--gold); }
+
+.search-bar {
+  flex: 1; max-width: 520px;
+  display: flex; align-items: center;
+  background: var(--cream); border: 1.5px solid var(--border);
+  border-radius: 50px; overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.search-bar:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(200,150,12,0.12);
+}
+.search-bar input {
+  flex: 1; border: none; background: transparent;
+  padding: 10px 18px; font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none; color: var(--ink);
+}
+.search-bar button {
+  background: var(--gold); border: none;
+  padding: 10px 18px; cursor: pointer;
+  color: white; font-size: 1rem;
+  transition: background var(--transition);
+}
+.search-bar button:hover { background: #b07d08; }
+
+.header-actions { display: flex; gap: 8px; align-items: center; }
+.btn-icon {
+  position: relative; background: none; border: 1.5px solid var(--border);
+  border-radius: 50px; padding: 9px 18px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+  color: var(--ink); transition: all var(--transition);
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-icon:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.cart-count {
+  background: var(--rust); color: white;
+  border-radius: 50%; width: 18px; height: 18px;
+  font-size: 0.7rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  position: absolute; top: -6px; right: -6px;
+}
+
+/* ─── NAV ─── */
+nav {
+  background: var(--ink); overflow-x: auto;
+}
+.nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; padding: 0 32px; gap: 0;
+}
+.nav-item {
+  padding: 13px 20px; color: #ccc;
+  cursor: pointer; font-size: 0.85rem;
+  font-weight: 500; letter-spacing: 0.04em;
+  white-space: nowrap; border-bottom: 3px solid transparent;
+  transition: all var(--transition);
+}
+.nav-item:hover, .nav-item.active {
+  color: var(--gold2); border-bottom-color: var(--gold);
+}
+
+/* ─── MAIN LAYOUT ─── */
+.app { display: flex; min-height: calc(100vh - 140px); }
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: 260px; flex-shrink: 0;
+  background: var(--paper); border-right: 1px solid var(--border);
+  padding: 24px 0; overflow-y: auto;
+  max-height: calc(100vh - 140px); position: sticky; top: 72px;
+}
+.sidebar-title {
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+  color: var(--muted); text-transform: uppercase;
+  padding: 0 20px 12px;
+}
+.sidebar-item {
+  padding: 11px 20px; cursor: pointer;
+  font-size: 0.88rem; font-weight: 400;
+  color: #444; transition: all var(--transition);
+  border-left: 3px solid transparent;
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-item:hover { background: #fdf8ee; color: var(--gold); border-left-color: var(--gold); }
+.sidebar-item.active { background: #fdf8ee; color: var(--gold); border-left-color: var(--gold); font-weight: 600; }
+.sidebar-icon { font-size: 1.1rem; }
+.sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 10px 20px; }
+
+/* ─── CONTENT ─── */
+.content { flex: 1; padding: 32px; overflow-y: auto; }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  display: flex; gap: 8px; align-items: center;
+  font-size: 0.82rem; color: var(--muted);
+  margin-bottom: 24px; flex-wrap: wrap;
+}
+.breadcrumb span { cursor: pointer; transition: color var(--transition); }
+.breadcrumb span:hover { color: var(--gold); }
+.breadcrumb .sep { color: #ccc; }
+.breadcrumb .current { color: var(--ink); font-weight: 600; }
+
+/* ─── SECTION HEADER ─── */
+.section-header {
+  display: flex; justify-content: space-between;
+  align-items: baseline; margin-bottom: 24px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; font-weight: 700;
+}
+.section-count { color: var(--muted); font-size: 0.85rem; }
+
+/* ─── CATEGORY GRID ─── */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px; margin-bottom: 40px;
+}
+.cat-card {
+  background: var(--paper); border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  padding: 28px 20px; text-align: center;
+  cursor: pointer; transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+.cat-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold2));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--transition);
+}
+.cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+.cat-card:hover::before { transform: scaleX(1); }
+.cat-icon { font-size: 2.8rem; margin-bottom: 12px; }
+.cat-name { font-weight: 600; font-size: 0.92rem; color: var(--ink); }
+.cat-sub  { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+/* ─── PRODUCT GRID ─── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.product-card {
+  background: var(--paper); border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  overflow: hidden; transition: all var(--transition);
+  display: flex; flex-direction: column;
+}
+.product-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: #ddd; }
+.product-img {
+  height: 160px; background: linear-gradient(135deg, #f0ede6, #e8e3d8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem; position: relative;
+}
+.stock-badge {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 0.7rem; padding: 3px 10px;
+  border-radius: 50px; font-weight: 600; letter-spacing: 0.04em;
+}
+.in-stock   { background: #e8f5e9; color: #2d6a2d; }
+.low-stock  { background: #fff8e1; color: #b07d00; }
+.out-stock  { background: #fdecea; color: #c0392b; }
+.product-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.product-brand { font-size: 0.72rem; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; }
+.product-name  { font-weight: 600; font-size: 0.96rem; line-height: 1.35; }
+.product-specs { font-size: 0.78rem; color: var(--muted); line-height: 1.5; flex: 1; }
+.product-footer { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-top: 1px solid var(--border); }
+.product-price { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--ink); }
+.qty-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.qty-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: none;
+  cursor: pointer; font-size: 1rem; display: flex;
+  align-items: center; justify-content: center;
+  transition: all var(--transition); color: var(--ink);
+}
+.qty-btn:hover:not(:disabled) { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.qty-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.qty-val { font-size: 0.9rem; font-weight: 600; min-width: 24px; text-align: center; }
+.btn-add {
+  background: var(--ink); color: var(--paper);
+  border: none; border-radius: 8px; padding: 9px 16px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+  font-weight: 600; cursor: pointer;
+  transition: all var(--transition); letter-spacing: 0.02em;
+}
+.btn-add:hover:not(:disabled) { background: var(--gold); }
+.btn-add:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ─── CART PANEL ─── */
+.cart-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 2000; opacity: 0; pointer-events: none;
+  transition: opacity var(--transition);
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-panel {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 420px; background: var(--paper);
+  z-index: 2001; transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: column;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.18);
+}
+.cart-panel.open { transform: translateX(0); }
+.cart-header {
+  padding: 24px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.cart-header h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; }
+.close-btn {
+  width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border);
+  background: none; cursor: pointer; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.close-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.cart-items { flex: 1; overflow-y: auto; padding: 16px; }
+.cart-empty {
+  text-align: center; padding: 60px 20px; color: var(--muted);
+}
+.cart-empty .icon { font-size: 3.5rem; margin-bottom: 12px; }
+.cart-item {
+  display: flex; gap: 12px; padding: 14px 0;
+  border-bottom: 1px solid var(--border); animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.cart-item-icon {
+  width: 56px; height: 56px; background: linear-gradient(135deg, #f0ede6, #e8e3d8);
+  border-radius: 8px; display: flex; align-items: center;
+  justify-content: center; font-size: 1.6rem; flex-shrink: 0;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name  { font-weight: 600; font-size: 0.9rem; }
+.cart-item-price { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+.cart-item-controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.cart-item-subtotal { font-weight: 700; color: var(--ink); font-size: 0.92rem; margin-left: auto; align-self: flex-start; padding-top: 4px; }
+.cart-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; transition: color var(--transition); }
+.cart-remove:hover { color: var(--rust); }
+.cart-footer {
+  padding: 20px 24px; border-top: 2px solid var(--border);
+  background: var(--cream);
+}
+.cart-totals { margin-bottom: 16px; }
+.cart-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.88rem; }
+.cart-row.total { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+.btn-checkout {
+  width: 100%; padding: 14px; background: var(--ink);
+  color: var(--paper); border: none; border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+  cursor: pointer; letter-spacing: 0.04em;
+  transition: background var(--transition);
+}
+.btn-checkout:hover { background: var(--gold); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 3000; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity var(--transition);
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--paper); border-radius: 16px;
+  width: 90%; max-width: 520px;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  overflow: hidden;
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-header {
+  padding: 24px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; }
+.modal-body { padding: 28px; }
+.modal-footer { padding: 20px 28px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ─── FORM ELEMENTS ─── */
+.form-group { margin-bottom: 18px; }
+.form-label { display: block; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; margin-bottom: 7px; }
+.form-input {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem; background: var(--cream); color: var(--ink);
+  outline: none; transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,150,12,0.1); background: var(--paper); }
+.form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+
+.radio-group { display: flex; flex-direction: column; gap: 10px; }
+.radio-label {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; border: 1.5px solid var(--border);
+  border-radius: 10px; cursor: pointer;
+  transition: all var(--transition); font-size: 0.9rem;
+}
+.radio-label:hover { border-color: var(--gold); background: #fdf8ee; }
+.radio-label input[type=radio] { accent-color: var(--gold); width: 16px; height: 16px; }
+.radio-label.selected { border-color: var(--gold); background: #fdf8ee; }
+.radio-icon { font-size: 1.4rem; }
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  background: var(--ink); color: var(--paper);
+  border: none; border-radius: 10px;
+  padding: 12px 28px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem; font-weight: 600; cursor: pointer;
+  transition: background var(--transition);
+}
+.btn-primary:hover { background: var(--gold); }
+.btn-secondary {
+  background: none; color: var(--ink);
+  border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 12px 28px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem; font-weight: 500; cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-secondary:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn-danger {
+  background: var(--rust); color: white; border: none;
+  border-radius: 10px; padding: 12px 28px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600;
+  cursor: pointer; transition: opacity var(--transition);
+}
+.btn-danger:hover { opacity: 0.85; }
+
+/* ─── TOAST ─── */
+#toast-container {
+  position: fixed; top: 80px; right: 24px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: var(--ink); color: var(--paper);
+  padding: 12px 20px; border-radius: 10px;
+  font-size: 0.88rem; font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  transform: translateX(120%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display: flex; align-items: center; gap: 10px;
+  max-width: 320px; pointer-events: all;
+}
+.toast.show { transform: translateX(0); }
+.toast.success { border-left: 4px solid #4caf50; }
+.toast.error   { border-left: 4px solid var(--rust); }
+.toast.info    { border-left: 4px solid var(--gold); }
+
+/* ─── ORDER SUCCESS ─── */
+.success-screen {
+  text-align: center; padding: 60px 40px; max-width: 540px;
+  margin: 0 auto; animation: fadeIn 0.4s ease;
+}
+.success-icon { font-size: 5rem; margin-bottom: 20px; animation: bounceIn 0.6s ease; }
+@keyframes bounceIn { 0%{ transform: scale(0) } 60%{ transform: scale(1.15) } 100%{ transform: scale(1) } }
+.success-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 12px; }
+.success-sub   { color: var(--muted); font-size: 0.95rem; margin-bottom: 32px; }
+.receipt-card {
+  background: var(--cream); border-radius: var(--radius);
+  border: 1.5px dashed var(--border);
+  padding: 24px; text-align: left; margin-bottom: 28px;
+}
+.receipt-row {
+  display: flex; justify-content: space-between;
+  font-size: 0.86rem; margin-bottom: 8px; color: #555;
+}
+.receipt-row.total { font-weight: 700; color: var(--ink); font-size: 1rem; border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 4px; }
+
+/* ─── SPINNER ─── */
+.spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .header-inner { padding: 14px 16px; }
+  .content { padding: 20px 16px; }
+  .cart-panel { width: 100%; }
+  .nav-inner { padding: 0 12px; }
+}
+
+/* ─── API DOCS OVERLAY ─── */
+.api-docs {
+  background: #1a1a2e; color: #e0e0e0;
+  border-radius: var(--radius); padding: 24px;
+  font-family: 'Courier New', monospace; font-size: 0.82rem;
+  line-height: 1.7; overflow-x: auto; margin-top: 20px;
+}
+.api-endpoint { color: #7ec8e3; font-weight: bold; }
+.api-method-get    { color: #4caf50; font-weight: bold; }
+.api-method-post   { color: #ff9800; font-weight: bold; }
+.api-method-delete { color: #f44336; font-weight: bold; }
+.api-comment { color: #666; }
+</style>
+</head>
+<body>
+
+<!-- ─── TOP BAR ─── -->
+<div class="topbar">✦ FREE SHIPPING ON ORDERS ABOVE ₹999 &nbsp;·&nbsp; USE CODE <strong>EASY10</strong> FOR 10% OFF ✦</div>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="goHome()">Shop<span>Easy</span></div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search products, brands…" oninput="handleSearch(this.value)" onkeydown="if(event.key==='Enter')handleSearch(this.value)"/>
+      <button onclick="handleSearch(document.getElementById('searchInput').value)">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" onclick="showApiDocs()">⚡ API</button>
+      <button class="btn-icon" id="cartBtn" onclick="toggleCart()">
+        🛍 Cart
+        <span class="cart-count" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-inner" id="navBar">
+    <div class="nav-item active" onclick="goHome()">🏠 All</div>
+  </div>
+</nav>
+
+<!-- ─── LAYOUT ─── -->
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Categories</div>
+  </aside>
+  <main class="content" id="mainContent">
+    <div style="text-align:center;padding:80px 20px;color:var(--muted)">
+      <div class="spinner" style="width:36px;height:36px;border-color:rgba(0,0,0,0.1);border-top-color:var(--gold);margin:0 auto 16px"></div>
+      <div>Loading products…</div>
+    </div>
+  </main>
+</div>
+
+<!-- ─── CART OVERLAY ─── -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-totals">
+      <div class="cart-row"><span>Subtotal</span><span id="subtotalVal">₹0</span></div>
+      <div class="cart-row"><span>Shipping</span><span style="color:var(--sage)">FREE</span></div>
+      <div class="cart-row total"><span>Total</span><span id="totalVal">₹0</span></div>
+    </div>
+    <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<!-- ─── CHECKOUT MODAL ─── -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Checkout</h2>
+      <button class="close-btn" onclick="closeModal('checkoutModal')">✕</button>
+    </div>
+    <div class="modal-body" id="checkoutBody">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" id="chkName" placeholder="Ravi Kumar"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Address</label>
+        <input type="text" class="form-input" id="chkAddress" placeholder="123, MG Road, Bangalore"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Method</label>
+        <div class="radio-group">
+          <label class="radio-label" id="lbl-cod" onclick="selectPayment('cod')">
+            <input type="radio" name="payment" value="cod" checked/>
+            <span class="radio-icon">📦</span>
+            <div><strong>Cash on Delivery</strong><br><small style="color:var(--muted)">Pay when you receive</small></div>
+          </label>
+          <label class="radio-label" id="lbl-online" onclick="selectPayment('online')">
+            <input type="radio" name="payment" value="online"/>
+            <span class="radio-icon">🏦</span>
+            <div><strong>Online Payment</strong><br><small style="color:var(--muted)">Bank account transfer</small></div>
+          </label>
+        </div>
+      </div>
+      <div id="bankFields" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Bank Account Number</label>
+          <input type="text" class="form-input" id="chkAccount" placeholder="e.g. 1234567890" maxlength="10"/>
+          <small style="color:var(--muted);font-size:0.78rem;margin-top:4px;display:block">
+            Test: 1234567890 (₹1L) · 9876543210 (₹50K) · 5544332211 (₹2.5L)
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('checkoutModal')">Cancel</button>
+      <button class="btn-primary" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── API DOCS MODAL ─── -->
+<div class="modal-overlay" id="apiModal">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <h2>⚡ REST API Reference</h2>
+      <button class="close-btn" onclick="closeModal('apiModal')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:20px;max-height:70vh;overflow-y:auto">
+      <div class="api-docs">
+<span class="api-comment"># ─── ShopEasy REST API ───────────────────────────────
+# Base URL: https://api.shopeasy.example.com/v1
+# Auth: Bearer &lt;token&gt; in Authorization header
+# Content-Type: application/json
+</span>
+
+<span class="api-comment"># ── CATEGORIES ──────────────────────────────────────</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/categories</span>
+<span class="api-comment">→ Returns all top-level categories</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/categories/:category/subcategories</span>
+<span class="api-comment">→ Returns subcategories for a category</span>
+
+<span class="api-comment"># ── PRODUCTS ────────────────────────────────────────</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/products</span>
+<span class="api-comment">→ List all products
+   ?category=Electronics
+   ?subcategory=Laptops
+   ?search=dell
+   ?min_price=5000&amp;max_price=50000
+   ?in_stock=true
+   ?page=1&amp;limit=20</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/products/:id</span>
+<span class="api-comment">→ Get single product detail</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/products/:id/stock</span>
+<span class="api-comment">→ Get real-time stock level</span>
+
+<span class="api-comment"># ── CART ────────────────────────────────────────────</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/cart</span>
+<span class="api-comment">→ Get current cart</span>
+
+<span class="api-method-post">POST</span>   <span class="api-endpoint">/cart/items</span>
+<span class="api-comment">→ Add item  Body: { "product_id": "...", "qty": 2 }</span>
+
+<span class="api-method-post">POST</span>   <span class="api-endpoint">/cart/items/:product_id</span>
+<span class="api-comment">→ Update qty  Body: { "qty": 3 }</span>
+
+<span class="api-method-delete">DELETE</span> <span class="api-endpoint">/cart/items/:product_id</span>
+<span class="api-comment">→ Remove item from cart
+   ?qty=1  (omit to remove all)</span>
+
+<span class="api-method-delete">DELETE</span> <span class="api-endpoint">/cart</span>
+<span class="api-comment">→ Clear entire cart</span>
+
+<span class="api-comment"># ── ORDERS ──────────────────────────────────────────</span>
+
+<span class="api-method-post">POST</span>   <span class="api-endpoint">/orders</span>
+<span class="api-comment">→ Place order
+   Body: {
+     "name": "Ravi Kumar",
+     "address": "123 MG Road",
+     "payment_method": "cod" | "online",
+     "account_no": "1234567890"  // if online
+   }</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/orders/:order_id</span>
+<span class="api-comment">→ Get order status + receipt</span>
+
+<span class="api-method-get">GET</span>    <span class="api-endpoint">/orders</span>
+<span class="api-comment">→ Order history  ?page=1&amp;limit=10</span>
+
+<span class="api-comment"># ── PAYMENT ─────────────────────────────────────────</span>
+
+<span class="api-method-post">POST</span>   <span class="api-endpoint">/payment/verify</span>
+<span class="api-comment">→ Verify bank account
+   Body: { "account_no": "1234567890" }
+   ← { "name": "Ravi", "balance": 100000 }</span>
+
+<span class="api-method-post">POST</span>   <span class="api-endpoint">/payment/process</span>
+<span class="api-comment">→ Deduct payment
+   Body: { "account_no": "...", "amount": 55000 }
+   ← { "success": true, "remaining_balance": 45000 }</span>
+
+<span class="api-comment"># ── STOCK ───────────────────────────────────────────</span>
+
+<span class="api-method-post">POST</span>   <span class="api-endpoint">/stock/reserve</span>
+<span class="api-comment">→ Reserve stock  Body: { "product_id":"...", "qty":2 }</span>
+
+<span class="api-method-post">POST</span>   <span class="api-endpoint">/stock/release</span>
+<span class="api-comment">→ Release reservation</span>
+
+<span class="api-comment"># ── EXAMPLE FETCH CALLS ─────────────────────────────</span>
+
+<span class="api-comment">// Get all Electronics products:</span>
+fetch('/v1/products?category=Electronics')
+  .then(r => r.json()).then(data => console.log(data))
+
+<span class="api-comment">// Add Dell Inspiron to cart:</span>
+fetch('/v1/cart/items', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ product_id: 'dell-inspiron-15', qty: 1 })
+})
+
+<span class="api-comment">// Place COD order:</span>
+fetch('/v1/orders', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    name: 'Ravi Kumar',
+    address: '123 MG Road, Bangalore',
+    payment_method: 'cod'
+  })
+})
+
+<span class="api-comment">// Online payment with bank account:</span>
+fetch('/v1/orders', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    name: 'Anita',
+    address: '45 Park Street, Mumbai',
+    payment_method: 'online',
+    account_no: '9876543210'
+  })
+})
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" onclick="closeModal('apiModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST CONTAINER ─── -->
+<div id="toast-container"></div>
+
+<!-- ─── JAVASCRIPT ─── -->
+<script>
+/* ════════════════════════════════════════════
+   DATA — mirrors the Python dict exactly
+════════════════════════════════════════════ */
+const CATEGORIES = {
+  "Electronics": {
+    icon: "📱",
+    "Laptops": {
+      "Dell":   { "Inspiron 15": {specs:"i5, 8GB RAM, 512GB SSD, 15.6\", Silver",price:55000}, "XPS 13":{specs:"i7, 16GB RAM, 1TB SSD, 13\", Platinum",price:120000} },
+      "HP":     { "Pavilion":{specs:"i7, 16GB RAM, 1TB SSD, 14\", Blue",price:75000}, "Omen":{specs:"Ryzen 7, 16GB RAM, RTX 4060, 15.6\", Black",price:95000} },
+      "Lenovo": { "ThinkPad X1":{specs:"i7, 16GB RAM, 512GB SSD, 14\", Carbon Black",price:110000} },
+      "Asus":   { "TUF Gaming F15":{specs:"i5, RTX 3050, 16GB RAM, 512GB SSD, 15.6\"",price:85000} }
+    },
+    "Phones": {
+      "Apple":   { "iPhone 14":{specs:"128GB, A15 Bionic, Colors: Blue, Black, Purple",price:80000}, "iPhone 15 Pro":{specs:"256GB, A17 Pro, Titanium",price:140000} },
+      "Samsung": { "Galaxy S23":{specs:"256GB, Snapdragon 8 Gen 2, Green/Lavender",price:72000}, "Galaxy Z Fold 5":{specs:"512GB, Snapdragon 8 Gen 2",price:145000} },
+      "OnePlus": { "11R":{specs:"256GB, Snapdragon 8+ Gen 1",price:45000} },
+      "Xiaomi":  { "13 Pro":{specs:"512GB, Snapdragon 8 Gen 2, Ceramic White",price:78000} }
+    },
+    "Headphones": {
+      "Sony": { "WH-1000XM5":{specs:"Wireless, Noise Cancelling, Black",price:29990}, "WF-C700N":{specs:"Bluetooth, ANC, White",price:8990} },
+      "Boat": { "Rockerz 450":{specs:"Bluetooth, 15H Playtime, Blue/Red",price:1499} },
+      "JBL":  { "Tune 510BT":{specs:"Wireless, 40mm Drivers, Black",price:2999} }
+    },
+    "Watches": {
+      "Apple":   { "Watch Series 9":{specs:"GPS+Cellular, 45mm, Pink Aluminum",price:45000} },
+      "Samsung": { "Galaxy Watch 6":{specs:"Bluetooth, 44mm, Graphite",price:34000} },
+      "Noise":   { "ColorFit Pro 4":{specs:"1.8\" Display, Heart Rate, Blue",price:3500} }
+    }
+  },
+  "Clothes": {
+    icon: "👕",
+    "Men": {
+      "Allen Solly":   { "Slim Fit Shirt":{specs:"Cotton, S-XL, Blue/White",price:2000} },
+      "Peter England": { "Formal Shirt":{specs:"Cotton, 38-44, White/Grey",price:1800} },
+      "Van Heusen":    { "Checked Shirt":{specs:"Slim Fit, M-XL, Navy/Red",price:2200} },
+      "Levis":         { "Slim Fit Jeans":{specs:"Denim, Waist 30-38, Blue",price:3500} },
+      "Wrangler":      { "Regular Fit":{specs:"Stretch Denim, Waist 32-42, Black",price:2800} },
+      "Puma":          { "Graphic Tee":{specs:"Cotton, S-XL, Black/Red",price:1500} },
+      "Adidas":        { "Sports Tee":{specs:"Polyester, S-XXL, Blue/White",price:1700} },
+      "Raymond":       { "Blazer":{specs:"Wool Blend, 38-44, Grey",price:6500} },
+      "Arrow":         { "Trousers":{specs:"Slim Fit, 30-38, Black",price:2800} }
+    },
+    "Women": {
+      "FabIndia":    { "Silk Saree":{specs:"6.3m, Handloom, Maroon/Green",price:5000} },
+      "Biba":        { "Cotton Saree":{specs:"6m, Printed, Yellow/Blue",price:3500} },
+      "Zara":        { "Casual Dress":{specs:"XS-L, Cotton, Beige/Black",price:4500} },
+      "H&M":         { "Evening Dress":{specs:"S-XL, Velvet, Red/Navy",price:6000} },
+      "Only":        { "Formal Top":{specs:"Polyester, S-L, White/Peach",price:1600} },
+      "Forever 21":  { "Floral Top":{specs:"Rayon, XS-L, Pink/Yellow",price:1800} },
+      "Global Desi": { "Anarkali":{specs:"Silk Blend, M-XL, Purple/Teal",price:4200} },
+      "W for Woman": { "Kurti Set":{specs:"Cotton, S-XL, Blue/Maroon",price:2800} }
+    }
+  },
+  "Shoes": {
+    icon: "👟",
+    "Sports": {
+      "Nike":   { "Air Zoom":{specs:"Running, Sizes 7-12, Black/Grey",price:6000}, "Metcon 8":{specs:"Training, Sizes 6-11, Blue/Red",price:8500} },
+      "Adidas": { "Ultraboost":{specs:"Running, Sizes 6-12, White/Grey",price:7000}, "Predator":{specs:"Football, Sizes 7-11, Black/Yellow",price:9000} }
+    },
+    "Casual": {
+      "Puma": { "Sneakers":{specs:"Sizes 6-11, Black/Navy",price:4000}, "Slides":{specs:"Sizes 7-12, Blue/Grey",price:1500} },
+      "Bata": { "Loafers":{specs:"Sizes 7-11, Tan/Brown",price:2500}, "Canvas":{specs:"Sizes 6-10, Blue/White",price:1800} }
+    },
+    "Formal": {
+      "Hush Puppies": { "Oxford":{specs:"Leather, Sizes 7-11, Brown/Black",price:5500} },
+      "Red Tape":     { "Derby":{specs:"PU Leather, Sizes 6-12, Tan",price:4200} }
+    }
+  },
+  "Daily Essentials": {
+    icon: "🧴",
+    "Grocery": {
+      "Aashirvaad": { "Atta":{specs:"10kg, Whole Wheat",price:500} },
+      "Tata":       { "Salt":{specs:"1kg, Iodized",price:25} },
+      "India Gate": { "Basmati Rice":{specs:"5kg, Premium",price:700} },
+      "Fortune":    { "Sunflower Oil":{specs:"5L Jar",price:780} }
+    },
+    "Toiletries": {
+      "Colgate":  { "Toothpaste":{specs:"150g, Mint",price:90} },
+      "Dove":     { "Shampoo":{specs:"500ml, Hair Fall Rescue",price:350} },
+      "Lifebuoy": { "Soap":{specs:"Pack of 4, 125g each",price:120} },
+      "Nivea":    { "Body Lotion":{specs:"400ml, Aloe",price:260} }
+    },
+    "Cleaning": {
+      "Surf Excel": { "Detergent":{specs:"4kg Pack",price:480} },
+      "Vim":        { "Dishwash Gel":{specs:"1L, Lemon",price:180} },
+      "Lizol":      { "Floor Cleaner":{specs:"2L, Lavender",price:220} }
+    },
+    "Stationery": {
+      "Classmate": { "Notebook":{specs:"200 Pages, A4",price:60} },
+      "Reynolds":  { "Pen Pack":{specs:"10 Blue Pens",price:90} }
+    }
+  },
+  "Protein & Supplements": {
+    icon: "💪",
+    "Whey Protein": {
+      "Optimum Nutrition": { "Gold Standard":{specs:"2kg, Double Chocolate",price:6000} },
+      "MuscleBlaze":       { "Biozyme Whey":{specs:"2kg, Café Mocha",price:5200} },
+      "Dymatize":          { "ISO 100":{specs:"2kg, Gourmet Vanilla",price:7500} },
+      "MyProtein":         { "Impact Whey":{specs:"1kg, Chocolate Smooth",price:3300} }
+    },
+    "Creatine": {
+      "Ultimate Nutrition": { "Creatine Monohydrate":{specs:"300g, Micronized",price:1200} },
+      "HealthKart":         { "Creatine":{specs:"250g, Unflavored",price:900} },
+      "MyProtein":          { "Creatine":{specs:"500g, Lemon",price:2000} }
+    },
+    "Multivitamins": {
+      "GNC":        { "Mega Men":{specs:"60 Tablets, Energy+Immunity",price:1200} },
+      "HealthKart": { "Daily Multivitamin":{specs:"90 Tablets, Wellness",price:800} },
+      "Revital":    { "H Multivitamin":{specs:"60 Capsules, With Ginseng",price:1000} }
+    },
+    "Pre-Workout": {
+      "C4":         { "Original":{specs:"300g, Fruit Punch",price:2500} },
+      "BigMuscles": { "Nitric Shock":{specs:"250g, Orange",price:1800} }
+    }
+  }
+};
+
+const BANK_ACCOUNTS = {
+  "1234567890": {name:"Ravi",   balance:100000},
+  "9876543210": {name:"Anita",  balance:50000},
+  "1122334455": {name:"Rahul",  balance:25000},
+  "5544332211": {name:"Teja",   balance:250000},
+  "6677889910": {name:"Rahul",  balance:220000}
+};
+
+const EMOJI_MAP = {
+  "Electronics":"📱","Laptops":"💻","Phones":"📱","Headphones":"🎧","Watches":"⌚",
+  "Clothes":"👕","Men":"👔","Women":"👗","Shoes":"👟","Sports":"🏃","Casual":"😎","Formal":"👞",
+  "Daily Essentials":"🧴","Grocery":"🛒","Toiletries":"🪥","Cleaning":"🧹","Stationery":"✏️",
+  "Protein & Supplements":"💪","Whey Protein":"🥛","Creatine":"⚡","Multivitamins":"💊","Pre-Workout":"🔥",
+  "Dell":"🖥️","HP":"🖥️","Lenovo":"🖥️","Asus":"🖥️","Apple":"🍎","Samsung":"📲","OnePlus":"📲","Xiaomi":"📲",
+  "Sony":"🎵","Boat":"🎵","JBL":"🎵","Nike":"👟","Adidas":"👟","Puma":"👟","Bata":"👞"
+};
+
+/* ════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════ */
+let cart   = {}; // { "Brand Model": { name, price, qty } }
+let stock  = {}; // { "Brand Model": 10 }
+let currentCategory    = null;
+let currentSubcategory = null;
+let selectedPayment    = 'cod';
+let lastOrder          = null;
+
+/* ─── Init stock ─── */
+(function initStock(){
+  for(const cat in CATEGORIES){
+    const catData = CATEGORIES[cat];
+    for(const sub in catData){
+      if(sub==='icon') continue;
+      for(const brand in catData[sub]){
+        for(const model in catData[sub][brand]){
+          stock[`${brand} ${model}`] = 10;
+        }
+      }
+    }
+  }
+})();
+
+/* ════════════════════════════════════════════
+   SIMULATED API LAYER
+   Every function mirrors a REST endpoint.
+   In production, replace fetch() stubs.
+════════════════════════════════════════════ */
+const API = {
+
+  /* GET /categories */
+  getCategories() {
+    return Promise.resolve(
+      Object.keys(CATEGORIES).map(name => ({
+        name,
+        icon: CATEGORIES[name].icon,
+        subcategories: Object.keys(CATEGORIES[name]).filter(k => k !== 'icon').length
+      }))
+    );
+  },
+
+  /* GET /categories/:cat/subcategories */
+  getSubcategories(cat) {
+    if(!CATEGORIES[cat]) return Promise.reject({error:'Category not found'});
+    const subs = Object.keys(CATEGORIES[cat]).filter(k=>k!=='icon');
+    return Promise.resolve(subs.map(s => ({ name: s, icon: EMOJI_MAP[s]||'📦' })));
+  },
+
+  /* GET /products?category=&subcategory=&search= */
+  getProducts({ category=null, subcategory=null, search=null } = {}) {
+    const results = [];
+    const cats = category ? [category] : Object.keys(CATEGORIES);
+    for(const c of cats){
+      const catData = CATEGORIES[c];
+      const subs = subcategory ? [subcategory] : Object.keys(catData).filter(k=>k!=='icon');
+      for(const s of subs){
+        if(!catData[s]) continue;
+        for(const brand in catData[s]){
+          for(const model in catData[s][brand]){
+            const {specs, price} = catData[s][brand][model];
+            const name = `${brand} ${model}`;
+            if(search && !name.toLowerCase().includes(search.toLowerCase()) && !specs.toLowerCase().includes(search.toLowerCase())) continue;
+            results.push({ id: name.replace(/\s+/g,'-').toLowerCase(), name, brand, model, specs, price, category:c, subcategory:s, stock: stock[name]||0 });
+          }
+        }
+      }
+    }
+    return Promise.resolve({ products: results, total: results.length });
+  },
+
+  /* GET /cart */
+  getCart() {
+    const items = Object.values(cart);
+    const total = items.reduce((s,i)=>s+i.price*i.qty, 0);
+    return Promise.resolve({ items, total, count: items.length });
+  },
+
+  /* POST /cart/items */
+  addToCart({ name, price, qty=1 }) {
+    if(!stock[name] && stock[name]!==0) return Promise.reject({error:'Product not found'});
+    if(qty <= 0) return Promise.reject({error:'Quantity must be positive'});
+    if(qty > stock[name]) return Promise.reject({error:`Only ${stock[name]} in stock`});
+    if(cart[name]) cart[name].qty += qty;
+    else cart[name] = { name, price, qty };
+    stock[name] -= qty;
+    updateCartUI();
+    return Promise.resolve({ success: true, cart: cart[name] });
+  },
+
+  /* DELETE /cart/items/:name?qty= */
+  removeFromCart({ name, qty=null }) {
+    if(!cart[name]) return Promise.reject({error:'Item not in cart'});
+    const remove = qty || cart[name].qty;
+    if(remove > cart[name].qty) return Promise.reject({error:'Cannot remove more than in cart'});
+    cart[name].qty -= remove;
+    stock[name] = (stock[name]||0) + remove;
+    if(cart[name].qty === 0) delete cart[name];
+    updateCartUI();
+    return Promise.resolve({ success: true });
+  },
+
+  /* DELETE /cart */
+  clearCart() {
+    for(const name in cart){ stock[name]=(stock[name]||0)+cart[name].qty; }
+    cart = {};
+    updateCartUI();
+    return Promise.resolve({ success: true });
+  },
+
+  /* POST /payment/verify */
+  verifyAccount({ account_no }) {
+    const acc = BANK_ACCOUNTS[account_no];
+    if(!acc) return Promise.reject({error:'Invalid account number'});
+    return Promise.resolve({ name: acc.name, balance: acc.balance });
+  },
+
+  /* POST /orders */
+  placeOrder({ name, address, payment_method, account_no=null }) {
+    if(!name||!address) return Promise.reject({error:'Name and address required'});
+    const items = Object.values(cart);
+    if(!items.length) return Promise.reject({error:'Cart is empty'});
+    const total = items.reduce((s,i)=>s+i.price*i.qty,0);
+
+    if(payment_method === 'online'){
+      const acc = BANK_ACCOUNTS[account_no];
+      if(!acc) return Promise.reject({error:'Invalid bank account'});
+      if(acc.balance < total) return Promise.reject({error:`Insufficient balance. Available: ₹${acc.balance.toLocaleString()}`});
+      BANK_ACCOUNTS[account_no].balance -= total;
+    }
+
+    const orderId = 'ORD' + Date.now();
+    lastOrder = {
+      orderId, name, address,
+      payment_method: payment_method==='cod'?'Cash on Delivery':`Online (A/C: ${account_no})`,
+      items: [...items], total,
+      timestamp: new Date().toLocaleString('en-IN'),
+      remaining_balance: payment_method==='online' ? BANK_ACCOUNTS[account_no].balance : null
+    };
+
+    // Clear cart
+    cart = {};
+    updateCartUI();
+    return Promise.resolve({ success: true, order_id: orderId, total });
+  }
+};
+
+/* ════════════════════════════════════════════
+   UI RENDERING
+════════════════════════════════════════════ */
+function goHome(){
+  currentCategory=null; currentSubcategory=null;
+  document.querySelectorAll('.sidebar-item').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.querySelector('.nav-item')?.classList.add('active');
+  renderHome();
+}
+
+async function renderHome(){
+  const main = document.getElementById('mainContent');
+  main.innerHTML = `<div class="breadcrumb"><span class="current">🏠 Home</span></div>
+  <div class="section-header"><h2 class="section-title">Shop by Category</h2></div>
+  <div class="cat-grid" id="catGrid"></div>
+  <div class="section-header" style="margin-top:40px"><h2 class="section-title">Featured Products</h2></div>
+  <div class="product-grid" id="featuredGrid"></div>`;
+
+  const { categories: cats } = await API.getCategories().then(c=>({categories:c}));
+  const grid = document.getElementById('catGrid');
+  cats.forEach(cat=>{
+    const card = document.createElement('div');
+    card.className='cat-card';
+    card.innerHTML=`<div class="cat-icon">${cat.icon}</div><div class="cat-name">${cat.name}</div><div class="cat-sub">${cat.subcategories} subcategories</div>`;
+    card.onclick=()=>selectCategory(cat.name);
+    grid.appendChild(card);
+  });
+
+  // Featured: 8 random products
+  const { products } = await API.getProducts();
+  const shuffled = products.sort(()=>Math.random()-0.5).slice(0,8);
+  const fg = document.getElementById('featuredGrid');
+  if(fg) shuffled.forEach(p=>fg.appendChild(makeProductCard(p)));
+}
+
+async function selectCategory(cat){
+  currentCategory=cat; currentSubcategory=null;
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(el=>el.classList.remove('active'));
+  const ni = document.querySelector(`.nav-item[data-cat="${cat}"]`);
+  if(ni) ni.classList.add('active');
+
+  const main = document.getElementById('mainContent');
+  main.innerHTML=`<div class="breadcrumb">
+    <span onclick="goHome()">🏠 Home</span><span class="sep">›</span>
+    <span class="current">${cat}</span></div>
+  <div class="section-header"><h2 class="section-title">${cat}</h2></div>
+  <div class="cat-grid" id="subGrid"></div>`;
+
+  const subs = await API.getSubcategories(cat);
+  const grid = document.getElementById('subGrid');
+  subs.forEach(sub=>{
+    const card=document.createElement('div');
+    card.className='cat-card';
+    card.innerHTML=`<div class="cat-icon">${sub.icon}</div><div class="cat-name">${sub.name}</div>`;
+    card.onclick=()=>selectSubcategory(cat,sub.name);
+    grid.appendChild(card);
+  });
+}
+
+async function selectSubcategory(cat, sub){
+  currentCategory=cat; currentSubcategory=sub;
+  const main=document.getElementById('mainContent');
+  main.innerHTML=`<div class="breadcrumb">
+    <span onclick="goHome()">🏠 Home</span><span class="sep">›</span>
+    <span onclick="selectCategory('${cat}')">${cat}</span><span class="sep">›</span>
+    <span class="current">${sub}</span></div>
+  <div class="section-header">
+    <h2 class="section-title">${sub}</h2>
+    <span class="section-count" id="pCount"></span></div>
+  <div class="product-grid" id="prodGrid"></div>`;
+
+  const { products } = await API.getProducts({category:cat, subcategory:sub});
+  const grid=document.getElementById('prodGrid');
+  const pc=document.getElementById('pCount');
+  if(pc) pc.textContent=`${products.length} products`;
+  if(!products.length){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">No products found.</div>`;
+    return;
+  }
+  products.forEach(p=>grid.appendChild(makeProductCard(p)));
+}
+
+function makeProductCard(p){
+  const el=document.createElement('div');
+  el.className='product-card'; el.id=`card-${p.name.replace(/\s+/g,'-')}`;
+  const s=stock[p.name]||0;
+  const badge=s===0?'<span class="stock-badge out-stock">Out of Stock</span>':s<=3?`<span class="stock-badge low-stock">Only ${s} left</span>`:'<span class="stock-badge in-stock">In Stock</span>';
+  const emo=EMOJI_MAP[p.brand]||EMOJI_MAP[p.category]||'📦';
+  el.innerHTML=`
+    <div class="product-img">${emo}${badge}</div>
+    <div class="product-body">
+      <div class="product-brand">${p.brand}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-specs">${p.specs}</div>
+    </div>
+    <div class="product-footer">
+      <div>
+        <div class="product-price">₹${p.price.toLocaleString()}</div>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="changeQty('${p.name}',-1)" id="qminus-${p.name.replace(/\s+/g,'-')}">−</button>
+          <span class="qty-val" id="qty-${p.name.replace(/\s+/g,'-')}">1</span>
+          <button class="qty-btn" onclick="changeQty('${p.name}',1)" id="qplus-${p.name.replace(/\s+/g,'-')}">+</button>
+        </div>
+      </div>
+      <button class="btn-add" onclick="addToCartUI('${p.name}',${p.price})" id="addbtn-${p.name.replace(/\s+/g,'-')}" ${s===0?'disabled':''}>
+        ${s===0?'Sold Out':'Add to Cart'}
+      </button>
+    </div>`;
+  return el;
+}
+
+function changeQty(name, delta){
+  const id=name.replace(/\s+/g,'-');
+  const el=document.getElementById(`qty-${id}`);
+  if(!el) return;
+  let v=parseInt(el.textContent)+delta;
+  const s=stock[name]||0;
+  v=Math.max(1,Math.min(v,s||1));
+  el.textContent=v;
+}
+
+async function addToCartUI(name, price){
+  const id=name.replace(/\s+/g,'-');
+  const qtyEl=document.getElementById(`qty-${id}`);
+  const qty=qtyEl?parseInt(qtyEl.textContent):1;
+  const btn=document.getElementById(`addbtn-${id}`);
+  if(btn){ btn.innerHTML='<span class="spinner"></span>'; btn.disabled=true; }
+  try {
+    await API.addToCart({name, price, qty});
+    showToast(`✅ ${qty}× ${name} added to cart`,'success');
+    if(qtyEl) qtyEl.textContent='1';
+    // Refresh stock badge on card
+    const s=stock[name];
+    const card=document.getElementById(`card-${name.replace(/\s+/g,'-')}`);
+    if(card){
+      const imgDiv=card.querySelector('.product-img');
+      if(imgDiv){
+        const emo=imgDiv.textContent.slice(0,2);
+        const badge=s===0?'<span class="stock-badge out-stock">Out of Stock</span>':s<=3?`<span class="stock-badge low-stock">Only ${s} left</span>`:'<span class="stock-badge in-stock">In Stock</span>';
+        imgDiv.innerHTML=emo+badge;
+      }
+      if(s===0 && btn){ btn.textContent='Sold Out'; btn.disabled=true; return; }
+    }
+  } catch(e){ showToast('❌ '+e.error,'error'); }
+  if(btn){ btn.textContent='Add to Cart'; btn.disabled=false; }
+}
+
+/* ─── CART UI ─── */
+function updateCartUI(){
+  API.getCart().then(({ items, total, count }) => {
+    const badge=document.getElementById('cartCount');
+    if(count>0){ badge.style.display='flex'; badge.textContent=count; }
+    else badge.style.display='none';
+
+    const container=document.getElementById('cartItems');
+    const footer=document.getElementById('cartFooter');
+
+    if(!items.length){
+      container.innerHTML=`<div class="cart-empty"><div class="icon">🛍️</div><div>Your cart is empty</div><div style="font-size:0.82rem;margin-top:6px">Add some products!</div></div>`;
+      footer.style.display='none';
+      return;
+    }
+    footer.style.display='block';
+    container.innerHTML='';
+    items.forEach(item=>{
+      const emo=EMOJI_MAP[item.name.split(' ')[0]]||'📦';
+      const div=document.createElement('div');
+      div.className='cart-item';
+      div.innerHTML=`
+        <div class="cart-item-icon">${emo}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">₹${item.price.toLocaleString()} each</div>
+          <div class="cart-item-controls">
+            <button class="qty-btn" style="width:24px;height:24px" onclick="cartQtyChange('${item.name}',-1)">−</button>
+            <span class="qty-val">${item.qty}</span>
+            <button class="qty-btn" style="width:24px;height:24px" onclick="cartQtyChange('${item.name}',1)">+</button>
+            <button class="cart-remove" onclick="removeItem('${item.name}')">✕ Remove</button>
+          </div>
+        </div>
+        <div class="cart-item-subtotal">₹${(item.price*item.qty).toLocaleString()}</div>`;
+      container.appendChild(div);
+    });
+    document.getElementById('subtotalVal').textContent='₹'+total.toLocaleString();
+    document.getElementById('totalVal').textContent='₹'+total.toLocaleString();
+  });
+}
+
+async function cartQtyChange(name, delta){
+  const item=cart[name];
+  if(!item) return;
+  if(delta<0){
+    try{ await API.removeFromCart({name,qty:1}); } catch(e){ showToast(e.error,'error'); }
+  } else {
+    try{ await API.addToCart({name, price:item.price, qty:1}); } catch(e){ showToast(e.error,'error'); }
+  }
+}
+
+async function removeItem(name){
+  try{
+    await API.removeFromCart({name});
+    showToast(`Removed ${name}`,'info');
+  } catch(e){ showToast(e.error,'error'); }
+}
+
+function toggleCart(){
+  document.getElementById('cartPanel').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
+/* ─── SEARCH ─── */
+async function handleSearch(q){
+  q=q.trim();
+  if(!q) return goHome();
+  currentCategory=null; currentSubcategory=null;
+  const main=document.getElementById('mainContent');
+  main.innerHTML=`<div class="breadcrumb"><span onclick="goHome()">🏠 Home</span><span class="sep">›</span><span class="current">Search: "${q}"</span></div>
+  <div class="section-header"><h2 class="section-title">Results</h2><span class="section-count" id="pCount"></span></div>
+  <div class="product-grid" id="prodGrid"></div>`;
+  const { products } = await API.getProducts({search:q});
+  const grid=document.getElementById('prodGrid');
+  document.getElementById('pCount').textContent=`${products.length} found`;
+  if(!products.length){ grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">No results for "${q}"</div>`; return; }
+  products.forEach(p=>grid.appendChild(makeProductCard(p)));
+}
+
+/* ─── CHECKOUT ─── */
+function openCheckout(){
+  if(!Object.keys(cart).length){ showToast('Cart is empty','error'); return; }
+  toggleCart();
+  openModal('checkoutModal');
+}
+
+function selectPayment(method){
+  selectedPayment=method;
+  document.getElementById('bankFields').style.display=method==='online'?'block':'none';
+  document.querySelectorAll('.radio-label').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('lbl-'+method).classList.add('selected');
+  document.querySelector(`input[value="${method}"]`).checked=true;
+}
+
+async function placeOrder(){
+  const name=document.getElementById('chkName').value.trim();
+  const address=document.getElementById('chkAddress').value.trim();
+  const account_no=document.getElementById('chkAccount').value.trim();
+  const btn=document.getElementById('placeOrderBtn');
+  if(!name||!address){ showToast('Please fill all fields','error'); return; }
+
+  btn.innerHTML='<span class="spinner"></span> Processing…'; btn.disabled=true;
+
+  // Verify account if online
+  if(selectedPayment==='online'){
+    try{ await API.verifyAccount({account_no}); }
+    catch(e){ showToast(e.error,'error'); btn.innerHTML='Place Order'; btn.disabled=false; return; }
+  }
+
+  try{
+    await API.placeOrder({name, address, payment_method:selectedPayment, account_no});
+    closeModal('checkoutModal');
+    renderOrderSuccess();
+    showToast('🎉 Order placed successfully!','success');
+  } catch(e){
+    showToast(e.error,'error');
+  }
+  btn.innerHTML='Place Order'; btn.disabled=false;
+}
+
+function renderOrderSuccess(){
+  const o=lastOrder;
+  const main=document.getElementById('mainContent');
+  main.innerHTML=`
+  <div class="success-screen">
+    <div class="success-icon">🎉</div>
+    <h2 class="success-title">Order Placed!</h2>
+    <p class="success-sub">Thank you, ${o.name}. Your order is confirmed.</p>
+    <div class="receipt-card">
+      <div class="receipt-row"><span>Order ID</span><strong>${o.orderId}</strong></div>
+      <div class="receipt-row"><span>Date</span><span>${o.timestamp}</span></div>
+      <div class="receipt-row"><span>Payment</span><span>${o.payment_method}</span></div>
+      <div class="receipt-row"><span>Address</span><span>${o.address}</span></div>
+      ${o.remaining_balance!==null?`<div class="receipt-row"><span>Remaining Balance</span><span>₹${o.remaining_balance.toLocaleString()}</span></div>`:''}
+      <hr style="border:none;border-top:1px dashed var(--border);margin:12px 0">
+      ${o.items.map(i=>`<div class="receipt-row"><span>${i.name} ×${i.qty}</span><span>₹${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
+      <div class="receipt-row total"><span>Total Paid</span><span>₹${o.total.toLocaleString()}</span></div>
+    </div>
+    <button class="btn-primary" style="width:100%" onclick="goHome()">Continue Shopping →</button>
+  </div>`;
+}
+
+/* ─── MODAL ─── */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function showApiDocs(){ openModal('apiModal'); }
+
+/* ─── TOAST ─── */
+function showToast(msg, type='info'){
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.textContent=msg;
+  document.getElementById('toast-container').appendChild(t);
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>t.classList.add('show')); });
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },3000);
+}
+
+/* ─── BUILD NAV & SIDEBAR ─── */
+async function buildNav(){
+  const cats = await API.getCategories();
+  const nav=document.getElementById('navBar');
+  const sidebar=document.getElementById('sidebar');
+
+  // Clear old category nav items (keep Home)
+  while(nav.children.length>1) nav.removeChild(nav.lastChild);
+  while(sidebar.children.length>2) sidebar.removeChild(sidebar.lastChild);
+
+  const title=document.createElement('div');
+  title.className='sidebar-title'; title.textContent='Categories';
+  sidebar.appendChild(title);
+
+  cats.forEach(cat=>{
+    const ni=document.createElement('div');
+    ni.className='nav-item'; ni.dataset.cat=cat.name;
+    ni.textContent=`${cat.icon} ${cat.name}`;
+    ni.onclick=()=>selectCategory(cat.name);
+    nav.appendChild(ni);
+
+    const si=document.createElement('div');
+    si.className='sidebar-item';
+    si.innerHTML=`<span class="sidebar-icon">${cat.icon}</span>${cat.name}`;
+    si.dataset.cat=cat.name;
+    si.onclick=()=>selectCategory(cat.name);
+    sidebar.appendChild(si);
+
+    const hr=document.createElement('hr');
+    hr.className='sidebar-divider';
+    sidebar.appendChild(hr);
+  });
+}
+
+/* ─── BOOT ─── */
+(async function init(){
+  await buildNav();
+  updateCartUI();
+  await renderHome();
+  // default payment UI
+  selectPayment('cod');
+})();
+</script>
+</body>
+</html>

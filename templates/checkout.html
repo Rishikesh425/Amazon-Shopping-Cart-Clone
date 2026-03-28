@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - ShopEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0d0d0d;
+            --cream: #faf8f4;
+            --paper: #ffffff;
+            --gold: #c8960c;
+            --rust: #c0392b;
+            --border: #e8e4db;
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+        header {
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+        }
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--ink);
+            text-decoration: none;
+        }
+        .logo span { color: var(--gold); }
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+        .error {
+            background: #fdecea;
+            color: var(--rust);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        .checkout-form {
+            background: var(--paper);
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .form-section {
+            margin-bottom: 32px;
+        }
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+        .form-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1.5px solid var(--border);
+        }
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .radio-option:hover {
+            border-color: var(--gold);
+            background: #faf8f4;
+        }
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+        .radio-label {
+            flex: 1;
+            cursor: pointer;
+        }
+        .radio-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .radio-desc {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        .bank-input {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            background: #faf8f4;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .order-summary {
+            margin-bottom: 32px;
+            padding: 16px;
+            background: #faf8f4;
+            border-radius: 8px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .summary-total {
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+            font-weight: 600;
+        }
+        .btn-submit {
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background var(--transition);
+        }
+        .btn-submit:hover { background: #b07d08; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="/" class="logo">Shop<span>Easy</span></a>
+        </div>
+    </header>
+    
+    <div class="content">
+        <h1 class="section-title">Checkout</h1>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <div class="checkout-form">
+            <div class="order-summary">
+                <h3 style="margin-bottom: 12px;">Order Summary</h3>
+                {% for item in cart %}
+                <div class="summary-item">
+                    <span>{{ item.name }} (x{{ item.qty }})</span>
+                    <span>₹{{ item.price * item.qty }}</span>
+                </div>
+                {% endfor %}
+                <div class="summary-item summary-total">
+                    <span>Total Amount:</span>
+                    <span>₹{{ total }}</span>
+                </div>
+            </div>
+            
+            <form method="POST" action="/checkout">
+                <div class="form-section">
+                    <div class="form-title">Select Payment Method</div>
+                    <div class="payment-options">
+                        <div class="radio-option">
+                            <input type="radio" id="cod" name="payment_method" value="cod" checked onchange="toggleBankInput()">
+                            <label for="cod" class="radio-label">
+                                <div class="radio-title">Cash on Delivery</div>
+                                <div class="radio-desc">Pay when you receive your order</div>
+                            </label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="online" name="payment_method" value="online" onchange="toggleBankInput()">
+                            <label for="online" class="radio-label">
+                                <div class="radio-title">Online Payment</div>
+                                <div class="radio-desc">Pay securely using bank account</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="bank-input" id="bankInput">
+                        <div class="form-group">
+                            <label for="account">Bank Account Number</label>
+                            <input type="text" id="account" name="account_no" placeholder="Enter your bank account number">
+                            <small style="color: #888; display: block; margin-top: 6px;">
+                                Test accounts: 1234567890, 9876543210, 1122334455, 5544332211, 6677889910
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">Place Order</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function toggleBankInput() {
+            const bankInput = document.getElementById('bankInput');
+            const online = document.getElementById('online').checked;
+            bankInput.style.display = online ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

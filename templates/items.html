@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category }} - {{ subcategory }} - ShopEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0d0d0d;
+            --cream: #faf8f4;
+            --paper: #ffffff;
+            --gold: #c8960c;
+            --rust: #c0392b;
+            --border: #e8e4db;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+        header {
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 16px 32px;
+        }
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--ink);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logo span { color: var(--gold); }
+        .btn-cart {
+            position: relative;
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background var(--transition);
+        }
+        .btn-cart:hover { background: var(--gold); }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--rust);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .breadcrumb {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px 32px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        .breadcrumb a { color: var(--gold); text-decoration: none; }
+        .message {
+            max-width: 1280px;
+            margin: 16px auto;
+            padding: 12px 32px;
+            background: #e8f5e9;
+            color: #2d6a2d;
+            border-radius: 8px;
+        }
+        .content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .product-card {
+            background: var(--paper);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all var(--transition);
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+        .product-img {
+            height: 160px;
+            background: linear-gradient(135deg, #f0ede6, #e8e3d8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+        }
+        .stock-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .in-stock { background: #e8f5e9; color: #2d6a2d; }
+        .low-stock { background: #fff8e1; color: #b07d00; }
+        .out-stock { background: #fdecea; color: #c0392b; }
+        .product-body {
+            padding: 16px;
+        }
+        .product-name {
+            font-weight: 600;
+            font-size: 0.98rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .product-specs {
+            font-size: 0.78rem;
+            color: #888;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding: 12px 16px;
+        }
+        .product-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+        }
+        .qty-btn:hover { background: var(--ink); color: var(--paper); }
+        .qty-val {
+            font-size: 0.9rem;
+            min-width: 20px;
+            text-align: center;
+        }
+        .btn-add {
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background var(--transition);
+            width: 100%;
+            margin-top: 12px;
+        }
+        .btn-add:hover:not(:disabled) { background: var(--gold); }
+        .btn-add:disabled { opacity: 0.4; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="/" class="logo">Shop<span>Easy</span></a>
+            <a href="/cart" class="btn-cart">
+                🛒 Cart
+                {% if cart_count > 0 %}
+                <span class="cart-count">{{ cart_count }}</span>
+                {% endif %}
+            </a>
+        </div>
+    </header>
+    
+    <div class="breadcrumb">
+        <a href="/">Home</a> / <a href="/category/{{ category }}">{{ category }}</a> / <span>{{ subcategory }}</span>
+    </div>
+    
+    {% if message %}
+    <div class="message">{{ message }}</div>
+    {% endif %}
+    
+    <div class="content">
+        <h1 class="section-title">{{ subcategory }}</h1>
+        
+        <div class="product-grid">
+            {% for item in items %}
+            <div class="product-card">
+                <div class="product-img">
+                    📦
+                    {% set stock = product_stock.get(item.name, 0) %}
+                    {% if stock > 5 %}
+                    <span class="stock-badge in-stock">In Stock</span>
+                    {% elif stock > 0 %}
+                    <span class="stock-badge low-stock">Low Stock</span>
+                    {% else %}
+                    <span class="stock-badge out-stock">Out of Stock</span>
+                    {% endif %}
+                </div>
+                <div class="product-body">
+                    <div class="product-name">{{ item.name }}</div>
+                    <div class="product-specs">{{ item.specs }}</div>
+                    
+                    <form method="POST" action="/add_to_cart" style="display: contents;">
+                        <input type="hidden" name="name" value="{{ item.name }}">
+                        <input type="hidden" name="price" value="{{ item.price }}">
+                        <input type="hidden" name="category" value="{{ category }}">
+                        <input type="hidden" name="subcategory" value="{{ subcategory }}">
+                        
+                        <div class="product-footer">
+                            <div class="product-price">₹{{ item.price }}</div>
+                            <div class="qty-selector">
+                                <button type="button" class="qty-btn" onclick="decreaseQty(this)">−</button>
+                                <input type="number" name="qty" value="1" min="1" max="{{ product_stock.get(item.name, 0) }}" class="qty-val" style="border: none; width: 30px; text-align: center;">
+                                <button type="button" class="qty-btn" onclick="increaseQty(this)">+</button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-add" {% if product_stock.get(item.name, 0) == 0 %}disabled{% endif %}>
+                            Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script>
+        function increaseQty(btn) {
+            const input = btn.parentElement.querySelector('input[name="qty"]');
+            const max = parseInt(input.max);
+            if (parseInt(input.value) < max) {
+                input.value = parseInt(input.value) + 1;
+            }
+        }
+        function decreaseQty(btn) {
+            const input = btn.parentElement.querySelector('input[name="qty"]');
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+    </script>
+</body>
+</html>

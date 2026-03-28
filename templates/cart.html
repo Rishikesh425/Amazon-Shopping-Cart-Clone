@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - ShopEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0d0d0d;
+            --cream: #faf8f4;
+            --paper: #ffffff;
+            --gold: #c8960c;
+            --rust: #c0392b;
+            --border: #e8e4db;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+        header {
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 16px 32px;
+        }
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--ink);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logo span { color: var(--gold); }
+        .content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+        .message {
+            background: #e8f5e9;
+            color: #2d6a2d;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .cart-empty .icon { font-size: 4rem; margin-bottom: 16px; }
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--paper);
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .item-details {
+            flex: 1;
+        }
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .item-price {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .item-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .item-qty {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--border);
+            background: none;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .item-total {
+            font-weight: 600;
+            min-width: 80px;
+            text-align: right;
+        }
+        .remove-form {
+            display: contents;
+        }
+        .btn-remove {
+            background: var(--rust);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background var(--transition);
+        }
+        .btn-remove:hover { background: #a02a22; }
+        .cart-summary {
+            background: var(--paper);
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .summary-total {
+            border-top: 1.5px solid var(--border);
+            padding-top: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .btn-checkout {
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background var(--transition);
+        }
+        .btn-checkout:hover { background: #b07d08; }
+        .btn-continue {
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background var(--transition);
+        }
+        .btn-continue:hover { background: var(--gold); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="/" class="logo">Shop<span>Easy</span></a>
+        </div>
+    </header>
+    
+    <div class="content">
+        <h1 class="section-title">Shopping Cart</h1>
+        
+        {% if message %}
+        <div class="message">{{ message }}</div>
+        {% endif %}
+        
+        {% if cart %}
+            <div class="cart-items">
+                {% for item in cart %}
+                <div class="cart-item">
+                    <div class="item-details">
+                        <div class="item-name">{{ item.name }}</div>
+                        <div class="item-price">₹{{ item.price }} each</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="item-qty">
+                            <form method="POST" action="/remove_from_cart" style="display: contents;">
+                                <input type="hidden" name="name" value="{{ item.name }}">
+                                <input type="hidden" name="remove_qty" value="1">
+                                <button type="submit" class="qty-btn">−</button>
+                            </form>
+                            <span>{{ item.qty }}</span>
+                            <form method="POST" action="/add_to_cart" style="display: contents;">
+                                <input type="hidden" name="name" value="{{ item.name }}">
+                                <input type="hidden" name="price" value="{{ item.price }}">
+                                <input type="hidden" name="qty" value="1">
+                                <button type="submit" class="qty-btn">+</button>
+                            </form>
+                        </div>
+                        <div class="item-total">₹{{ item.price * item.qty }}</div>
+                        <form method="POST" action="/remove_from_cart" class="remove-form">
+                            <input type="hidden" name="name" value="{{ item.name }}">
+                            <input type="hidden" name="remove_qty" value="{{ item.qty }}">
+                            <button type="submit" class="btn-remove">Remove</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>₹{{ total }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span>Free</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total:</span>
+                    <span>₹{{ total }}</span>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 12px;">
+                <a href="/" class="btn-continue">Continue Shopping</a>
+                <form method="POST" action="/checkout" style="flex: 1;">
+                    <button type="submit" class="btn-checkout">Proceed to Checkout</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="cart-empty">
+                <div class="icon">🛒</div>
+                <h2 style="margin-bottom: 16px;">Your cart is empty</h2>
+                <p style="color: #888; margin-bottom: 24px;">Let's add some items!</p>
+                <a href="/" class="btn-continue">Start Shopping</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

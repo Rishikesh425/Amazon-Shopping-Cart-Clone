@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful - ShopEasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0d0d0d;
+            --cream: #faf8f4;
+            --paper: #ffffff;
+            --gold: #c8960c;
+            --sage: #2d6a4f;
+            --border: #e8e4db;
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+        header {
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+        }
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--ink);
+            text-decoration: none;
+        }
+        .logo span { color: var(--gold); }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 32px;
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: 24px;
+        }
+        .success-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--sage);
+        }
+        .success-message {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        .order-details {
+            background: var(--paper);
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 600;
+        }
+        .detail-value {
+            color: #888;
+        }
+        .order-items {
+            background: var(--paper);
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        .items-title {
+            font-weight: 600;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--cream);
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        .item-name {
+            font-weight: 500;
+        }
+        .item-price {
+            color: #888;
+        }
+        .total {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-top: 1.5px solid var(--border);
+            margin-top: 16px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .btn-home {
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background var(--transition);
+        }
+        .btn-home:hover { background: #b07d08; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="/" class="logo">Shop<span>Easy</span></a>
+        </div>
+    </header>
+    
+    <div class="content">
+        <div class="success-icon">✓</div>
+        <h1 class="success-title">Order Placed Successfully!</h1>
+        <p class="success-message">Thank you for your purchase. Your order has been confirmed.</p>
+        
+        {% if order %}
+        <div class="order-details">
+            <div class="detail-row">
+                <span class="detail-label">Order ID:</span>
+                <span class="detail-value">#{{ loop.index0 + 1000 }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Order Date:</span>
+                <span class="detail-value">{{ order.timestamp }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment Method:</span>
+                <span class="detail-value">{{ order.method }}</span>
+            </div>
+            {% if order.remaining_balance %}
+            <div class="detail-row">
+                <span class="detail-label">Remaining Balance:</span>
+                <span class="detail-value">₹{{ order.remaining_balance }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="order-items">
+            <div class="items-title">Order Items</div>
+            {% for item in order.cart %}
+            <div class="item">
+                <span class="item-name">{{ item.name }} (x{{ item.qty }})</span>
+                <span class="item-price">₹{{ item.price * item.qty }}</span>
+            </div>
+            {% endfor %}
+            <div class="total">
+                <span>Total Amount:</span>
+                <span>₹{{ order.total }}</span>
+            </div>
+        </div>
+        {% endif %}
+        
+        <a href="/" class="btn-home">Continue Shopping</a>
+    </div>
+</body>
+</html>
